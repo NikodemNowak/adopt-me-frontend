@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginOrRegisterFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.nikodem.adoptme.ui.main.MainFragment"
+        android:label="MainFragment" />
+    <fragment
+        android:id="@+id/formFragment"
+        android:name="com.nikodem.adoptme.ui.form.QuestionFragment"
+        android:label="FormFragment" >
+        <action
+            android:id="@+id/action_formFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerUserFragment"
+        android:name="com.nikodem.adoptme.ui.register_user.RegisterUserFragment"
+        android:label="RegisterUserFragment" >
+        <action
+            android:id="@+id/action_registerUserFragment_to_confirmOtpCodeFragment"
+            app:destination="@id/confirmOtpCodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmOtpCodeFragment"
+        android:name="com.nikodem.adoptme.ui.confirm_otp_code.ConfirmOtpCodeFragment"
+        android:label="ConfirmOtpCodeFragment" >
+        <action
+            android:id="@+id/action_confirmOtpCodeFragment_to_endRegistrationFragment"
+            app:destination="@id/endRegistrationFragment" />
+        <action
+            android:id="@+id/action_confirmOtpCodeFragment_to_endLoggingInFragment"
+            app:destination="@id/endLoggingInFragment" />
+        <argument
+            android:name="authProcess"
+            app:argType="com.nikodem.adoptme.ui.confirm_otp_code.AuthProcess" />
+    </fragment>
+    <fragment
+        android:id="@+id/endRegistrationFragment"
+        android:name="com.nikodem.adoptme.ui.end_registration.EndRegistrationFragment"
+        android:label="EndRegistrationFragment" >
+        <action
+            android:id="@+id/action_endRegistrationFragment_to_formFragment"
+            app:destination="@id/formFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerShelterFragment"
+        android:name="com.nikodem.adoptme.ui.register_shelter.RegisterShelterFragment"
+        android:label="RegisterShelterFragment" >
+        <action
+            android:id="@+id/action_registerShelterFragment_to_confirmOtpCodeFragment"
+            app:destination="@id/confirmOtpCodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginOrRegisterFragment"
+        android:name="com.nikodem.adoptme.ui.login_or_register.LoginOrRegisterFragment"
+        android:label="LoginOrRegisterFragment">
+        <action
+            android:id="@+id/action_loginOrRegisterFragment_to_registerShelterFragment"
+            app:destination="@id/registerShelterFragment" />
+        <action
+            android:id="@+id/action_loginOrRegisterFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_loginOrRegisterFragment_to_registerUserFragment"
+            app:destination="@id/registerUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.nikodem.adoptme.ui.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_confirmOtpCodeFragment"
+            app:destination="@id/confirmOtpCodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/endLoggingInFragment"
+        android:name="com.nikodem.adoptme.ui.end_logging_in.EndLoggingInFragment"
+        android:label="EndLoggingInFragment" >
+        <action
+            android:id="@+id/action_endLoggingInFragment_to_formFragment"
+            app:destination="@id/formFragment" />
+    </fragment>
+</navigation>

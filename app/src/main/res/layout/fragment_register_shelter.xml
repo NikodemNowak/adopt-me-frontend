@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shelter_register_form"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/shelterNameIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/ic_baseline_assignment_ind_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <EditText
+            android:id="@+id/shelterNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/shelter_s_name"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/shelterNameIcon"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <ImageView
+            android:id="@+id/shelterAddressIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/ic_baseline_location_on_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shelterNameEditText"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <EditText
+            android:id="@+id/shelterAddressEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/shelter_s_address"
+            android:minHeight="48dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/shelterAddressIcon"
+            app:layout_constraintTop_toBottomOf="@+id/shelterNameEditText" />
+
+        <ImageView
+            android:id="@+id/shelterPhoneNumberIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/ic_baseline_phone_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shelterAddressEditText" />
+
+        <EditText
+            android:id="@+id/shelterPhoneNumberEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/shelter_s_phone_number"
+            android:inputType="phone"
+            android:minHeight="48dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/shelterPhoneNumberIcon"
+            app:layout_constraintTop_toBottomOf="@+id/shelterAddressEditText" />
+
+        <ImageView
+            android:id="@+id/shelterWorkingHoursIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="45dp"
+            android:src="@drawable/ic_baseline_access_time_filled_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shelterPhoneNumberEditText" />
+
+        <EditText
+            android:id="@+id/startHourEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="40dp"
+            android:hint="@string/opening"
+            android:inputType="time"
+            android:minHeight="48dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/endHourEditText"
+            app:layout_constraintStart_toEndOf="@id/shelterWorkingHoursIcon"
+            app:layout_constraintTop_toBottomOf="@+id/shelterPhoneNumberEditText" />
+
+        <EditText
+            android:id="@+id/endHourEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="@string/closing"
+            android:inputType="time"
+            android:minHeight="48dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/startHourEditText"
+            app:layout_constraintTop_toBottomOf="@+id/shelterPhoneNumberEditText" />
+
+        <Button
+            android:id="@+id/registerShelterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/black"
+            android:text="@string/submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startHourEditText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

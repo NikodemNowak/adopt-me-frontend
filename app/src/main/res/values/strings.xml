@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Adopt me</string>
+    <string name="questionNumber">%1$s/10</string>
+    <string name="choose_one_option_below">Choose one option below</string>
+    <string name="user_register">User register</string>
+    <string name="login">Login</string>
+    <string name="shelter_register">Shelter register</string>
+    <string name="enter_first_name_here">Enter first name here</string>
+    <string name="user_register_form">User Register Form</string>
+    <string name="enter_last_name_here">Enter last name here</string>
+    <string name="enter_city_here">Enter city here</string>
+    <string name="enter_phone_number_here">Enter phone number here</string>
+    <string name="enter_email_here">Enter email here</string>
+    <string name="submit">Submit</string>
+    <string name="confirmation_code_was_sent_to_your_phone_number">Confirmation code was sent to your phone number</string>
+    <string name="enter_code_here">Enter code here</string>
+    <string name="code_did_not_come">Code did not come?</string>
+    <string name="resend">Resend</string>
+    <string name="set_your_pin_here">Set your PIN here</string>
+    <string name="enter_pin_here">Enter PIN here</string>
+    <string name="confirm_pin_here">Confirm PIN here</string>
+    <string name="shelter_register_form">Shelter Register Form</string>
+    <string name="enter_shelter_s_name_here">Enter shelter\'s name here</string>
+    <string name="enter_shelter_s_address_here">Enter shelter\'s address here</string>
+    <string name="enter_shelter_s_phone_number">Enter shelter\'s phone number</string>
+    <string name="shelter_s_name">Shelter\'s name</string>
+    <string name="shelter_s_address">Shelter\'s address</string>
+    <string name="shelter_s_phone_number">Shelter\'s phone number</string>
+    <string name="opening">Opening</string>
+    <string name="closing">Closing</string>
+    <string name="phone_number">Phone number:</string>
+    <string name="enter_your_pin_here">Enter your PIN here:</string>
+</resources>
