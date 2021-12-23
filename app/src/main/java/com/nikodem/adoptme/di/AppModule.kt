@@ -19,6 +19,10 @@ import com.nikodem.adoptme.ui.main.MainFragmentViewModel
 import com.nikodem.adoptme.ui.profile.ProfileFragmentViewModel
 import com.nikodem.adoptme.ui.register_shelter.RegisterShelterFragmentViewModel
 import com.nikodem.adoptme.ui.register_user.RegisterUserFragmentViewModel
+import com.nikodem.adoptme.usecases.AddUserPreferenceUseCase
+import com.nikodem.adoptme.usecases.AddUserPreferenceUseCaseImpl
+import com.nikodem.adoptme.usecases.GetQuestionAnswersUseCase
+import com.nikodem.adoptme.usecases.GetQuestionAnswersUseCaseImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -32,7 +36,12 @@ val appModule = module {
 
     viewModel { ProfileFragmentViewModel() }
 
-    viewModel { FormFragmentViewModel(questionAnswersRepository = get(), get()) }
+    viewModel {
+        FormFragmentViewModel(
+            getQuestionAnswersUseCase = get(),
+            addUserPreferenceUseCase = get()
+        )
+    }
 
     viewModel { LoginOrRegisterFragmentViewModel() }
 
@@ -65,7 +74,21 @@ val appModule = module {
 
     single<CachedAdoptMeRepository> {
         CachedAdoptMeRepositoryImpl(
-            userDao = get<AppDatabase>().userDao()
+            userDao = get<AppDatabase>().userDao(),
+            questionAnswersDao = get<AppDatabase>().questionAnswersDao()
+        )
+    }
+
+    factory<GetQuestionAnswersUseCase> {
+        GetQuestionAnswersUseCaseImpl(
+            cachedAdoptMeRepository = get(),
+            adoptMeRepository = get()
+        )
+    }
+
+    factory<AddUserPreferenceUseCase>{
+        AddUserPreferenceUseCaseImpl(
+            adoptMeRepository = get()
         )
     }
 }

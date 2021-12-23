@@ -27,7 +27,7 @@ val networkModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl("http://192.168.50.62:8080/api/")
+            .baseUrl("http://192.168.50.203:8080/api/")
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .client(get())
             .build()
