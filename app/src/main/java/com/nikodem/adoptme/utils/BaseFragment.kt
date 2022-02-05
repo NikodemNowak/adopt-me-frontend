@@ -7,17 +7,20 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.snackbar.Snackbar
 import com.nikodem.adoptme.BR
 import com.nikodem.adoptme.R
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseFragment<STATE : ViewState, VM : BaseViewModel<STATE>, VDB : ViewDataBinding>(
@@ -33,6 +36,14 @@ abstract class BaseFragment<STATE : ViewState, VM : BaseViewModel<STATE>, VDB : 
     }
 
     private var loader: LottieAnimationView? = null
+
+    var onBackEvent: () -> Unit = {
+        runCatching {
+            findNavController().navigateUp()
+        }.onFailure {
+            Timber.e(it, "onBackEvent error")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +79,10 @@ abstract class BaseFragment<STATE : ViewState, VM : BaseViewModel<STATE>, VDB : 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            onBackEvent.invoke()
+        }
 
         with(viewModel) {
             inProgress.observe(viewLifecycleOwner) {

@@ -1,14 +1,10 @@
 package com.nikodem.adoptme.ui.form
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
-import com.airbnb.lottie.LottieAnimationView
 import com.nikodem.adoptme.R
 import com.nikodem.adoptme.databinding.FragmentFormQuestionBinding
+import com.nikodem.adoptme.ui.dialog.CancelRegistrationDialog
 import com.nikodem.adoptme.utils.BaseFragment
 
 
@@ -21,7 +17,10 @@ class QuestionFragment :
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadQuestionAnswers()
 
-        with(binding){
+        onBackEvent = {
+        }
+
+        with(binding) {
             answer1.setOnClickListener {
                 val answer = viewModel.viewState.value!!.answer1
                 viewModel.sendUserPreferences(answer)

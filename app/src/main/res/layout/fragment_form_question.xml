@@ -61,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{vm.viewState.answer2}"
+            app:onClick="@{vm::onSecondButtonClick}"
             app:layout_constraintBottom_toTopOf="@+id/answer3" />
 
         <Button
@@ -69,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{vm.viewState.answer3}"
+            app:onClick="@{vm::onThirdButtonClick}"
             app:layout_constraintBottom_toTopOf="@id/answer4" />
 
         <Button
@@ -77,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{vm.viewState.answer4}"
+            app:onClick="@{vm::onFourthButtonClick}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

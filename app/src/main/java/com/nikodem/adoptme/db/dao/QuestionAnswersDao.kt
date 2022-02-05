@@ -20,4 +20,7 @@ interface QuestionAnswersDao {
 
     @Delete
     suspend fun delete(questionAnswersDB: QuestionAnswersDB)
+
+    @Query("DELETE FROM QuestionAnswersDB")
+    fun deleteAll()
 }

@@ -7,3 +7,8 @@ import androidx.databinding.BindingAdapter
 fun View.setOnClick(action: () -> Unit) {
     setOnClickListener { action.invoke() }
 }
+
+@BindingAdapter("visibleInvisible")
+fun View.visibleInvisible(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+}

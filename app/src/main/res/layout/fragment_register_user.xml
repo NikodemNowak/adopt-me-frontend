@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.nikodem.adoptme.ui.register_user.RegisterUserFragmentViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,7 +36,8 @@
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            bind:error="@{vm.viewState.firstNameError}" />
 
         <EditText
             android:id="@+id/lastNameEditText"
@@ -40,7 +49,8 @@
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
+            app:layout_constraintTop_toBottomOf="@id/firstNameEditText"
+            bind:error="@{vm.viewState.lastNameError}" />
 
         <EditText
             android:id="@+id/cityEditText"
@@ -52,7 +62,8 @@
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lastNameEditText" />
+            app:layout_constraintTop_toBottomOf="@id/lastNameEditText"
+            bind:error="@{vm.viewState.cityError}" />
 
         <EditText
             android:id="@+id/phoneNumberEditText"
@@ -64,7 +75,8 @@
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cityEditText" />
+            app:layout_constraintTop_toBottomOf="@id/cityEditText"
+            bind:error="@{vm.viewState.phoneNumberError}" />
 
         <EditText
             android:id="@+id/emailEditText"
@@ -76,7 +88,8 @@
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/phoneNumberEditText" />
+            app:layout_constraintTop_toBottomOf="@id/phoneNumberEditText"
+            bind:error="@{vm.viewState.emailError}" />
 
         <Button
             android:id="@+id/submitRegisterButton"
@@ -87,7 +100,8 @@
             android:text="@string/submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/emailEditText"
+            app:onClick="@{vm::sendUser}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

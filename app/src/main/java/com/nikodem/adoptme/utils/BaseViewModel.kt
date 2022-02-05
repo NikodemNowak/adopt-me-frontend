@@ -31,10 +31,12 @@ abstract class BaseViewModel<STATE : ViewState>(
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         Timber.e(exception, "CoroutineExceptionHandler")
-        handleError(exception)
+        handleError(exception as AdoptMeError)
     }
 
-    open fun handleError(exception: Throwable) {}
+    open fun handleError(adoptMeError: AdoptMeError) {
+
+    }
 
     protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(handler, block = block)

@@ -30,4 +30,6 @@
     <string name="closing">Closing</string>
     <string name="phone_number">Phone number:</string>
     <string name="enter_your_pin_here">Enter your PIN here:</string>
+    <string name="code_expired">Code expired?</string>
+    <string name="pins_are_different">Pins are different</string>
 </resources>

@@ -13,13 +13,18 @@ interface CachedAdoptMeRepository {
 class CachedAdoptMeRepositoryImpl(
     private val userDao: UserDao,
     private val questionAnswersDao: QuestionAnswersDao
-) : CachedAdoptMeRepository {
+) : CachedAdoptMeRepository, Cache {
     override suspend fun isCached(): Boolean {
         return questionAnswersDao.count() > 0
     }
 
     override suspend fun getCachedQuestionAnswers(): List<QuestionAnswers> {
         return questionAnswersDao.getAll().map { it.toDomain() }
+    }
+
+    override fun invalidate() {
+        userDao.deleteAll()
+        questionAnswersDao.deleteAll()
     }
 }
 

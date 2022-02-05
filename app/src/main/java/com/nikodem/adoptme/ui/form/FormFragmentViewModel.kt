@@ -1,9 +1,9 @@
 package com.nikodem.adoptme.ui.form
 
-import com.nikodem.adoptme.services.UserPreferencesPostRequest
 import com.nikodem.adoptme.usecases.AddUserPreferenceUseCase
 import com.nikodem.adoptme.usecases.GetQuestionAnswersUseCase
 import com.nikodem.adoptme.usecases.UserPreference
+import com.nikodem.adoptme.utils.AdoptMeError
 import com.nikodem.adoptme.utils.BaseViewModel
 import com.nikodem.adoptme.utils.ViewState
 import com.nikodem.adoptme.utils.fireEvent
@@ -14,6 +14,7 @@ class FormFragmentViewModel(
     private val addUserPreferenceUseCase: AddUserPreferenceUseCase
 ) :
     BaseViewModel<FormFragmentViewState>(initialState = FormFragmentViewState()) {
+
     fun loadQuestionAnswers() {
         updateViewState {
             it.copy(
@@ -42,6 +43,18 @@ class FormFragmentViewModel(
 
     }
 
+    fun onSecondButtonClick() {
+
+    }
+
+    fun onThirdButtonClick() {
+
+    }
+
+    fun onFourthButtonClick() {
+
+    }
+
     fun sendUserPreferences(answer: String) {
         updateViewState {
             it.copy(
@@ -67,9 +80,9 @@ class FormFragmentViewModel(
         }
     }
 
-    override fun handleError(exception: Throwable) {
-        super.handleError(exception)
-        showToastEvent.fireEvent(exception.toString())
+    override fun handleError(adoptMeError: AdoptMeError) {
+        super.handleError(adoptMeError)
+        showToastEvent.fireEvent(adoptMeError.toString())
     }
 }
 

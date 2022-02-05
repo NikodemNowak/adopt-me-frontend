@@ -1,13 +1,13 @@
 package com.nikodem.adoptme.di
 
+import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.nikodem.adoptme.db.AppDatabase
-import com.nikodem.adoptme.repositories.AdoptMeRepository
-import com.nikodem.adoptme.repositories.AdoptMeRepositoryImpl
-import com.nikodem.adoptme.repositories.CachedAdoptMeRepository
-import com.nikodem.adoptme.repositories.CachedAdoptMeRepositoryImpl
-import com.nikodem.adoptme.ui.confirm_otp_code.ConfirmOtpCodeFragmentViewModel
+import com.nikodem.adoptme.repositories.*
+import com.nikodem.adoptme.ui.confirm_otp_code.*
 import com.nikodem.adoptme.ui.end_logging_in.EndLoggingInFragmentViewModel
 import com.nikodem.adoptme.ui.end_registration.EndRegistrationFragmentViewModel
 import com.nikodem.adoptme.ui.favorites.FavoritesFragmentViewModel
@@ -19,12 +19,10 @@ import com.nikodem.adoptme.ui.main.MainFragmentViewModel
 import com.nikodem.adoptme.ui.profile.ProfileFragmentViewModel
 import com.nikodem.adoptme.ui.register_shelter.RegisterShelterFragmentViewModel
 import com.nikodem.adoptme.ui.register_user.RegisterUserFragmentViewModel
-import com.nikodem.adoptme.usecases.AddUserPreferenceUseCase
-import com.nikodem.adoptme.usecases.AddUserPreferenceUseCaseImpl
-import com.nikodem.adoptme.usecases.GetQuestionAnswersUseCase
-import com.nikodem.adoptme.usecases.GetQuestionAnswersUseCaseImpl
+import com.nikodem.adoptme.usecases.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
@@ -45,11 +43,21 @@ val appModule = module {
 
     viewModel { LoginOrRegisterFragmentViewModel() }
 
-    viewModel { RegisterUserFragmentViewModel() }
+    viewModel {
+        RegisterUserFragmentViewModel(
+            addUserUseCase = get(),
+            savedStateHandle = get()
+        )
+    }
 
-    viewModel { ConfirmOtpCodeFragmentViewModel() }
+    viewModel {
+        ConfirmOtpCodeFragmentViewModel(
+            savedStateHandle = get(),
+            verifyOtpUseCase = get()
+        )
+    }
 
-    viewModel { EndRegistrationFragmentViewModel() }
+    viewModel { EndRegistrationFragmentViewModel(setPinUseCase = get()) }
 
     viewModel { RegisterShelterFragmentViewModel() }
 
@@ -62,7 +70,11 @@ val appModule = module {
     }
 
     single<AdoptMeRepository> {
-        AdoptMeRepositoryImpl(adoptMeApiService = get())
+        AdoptMeRepositoryImpl(
+            adoptMeApiService = get(),
+            networkHandler = get(),
+            tokenRepository = get()
+        )
     }
 
     single<AppDatabase> {
@@ -73,9 +85,11 @@ val appModule = module {
     }
 
     single<CachedAdoptMeRepository> {
-        CachedAdoptMeRepositoryImpl(
-            userDao = get<AppDatabase>().userDao(),
-            questionAnswersDao = get<AppDatabase>().questionAnswersDao()
+        get<CacheManager>().registerCache(
+            CachedAdoptMeRepositoryImpl(
+                userDao = get<AppDatabase>().userDao(),
+                questionAnswersDao = get<AppDatabase>().questionAnswersDao()
+            )
         )
     }
 
@@ -86,9 +100,65 @@ val appModule = module {
         )
     }
 
-    factory<AddUserPreferenceUseCase>{
+    factory<AddUserPreferenceUseCase> {
         AddUserPreferenceUseCaseImpl(
             adoptMeRepository = get()
+        )
+    }
+
+    factory<AddUserUseCase> {
+        AddUserUseCaseImpl(
+            adoptMeRepository = get(),
+            tokenRepository = get()
+        )
+    }
+
+    factory<VerifyOtpUseCase> {
+        VerifyOtpUseCaseImpl(
+            adoptMeRepository = get(),
+            tokenRepository = get()
+        )
+    }
+
+    factory<SetPinUseCase> {
+        SetPinUseCaseImpl(
+            adoptMeRepository = get(),
+            tokenRepository = get()
+        )
+    }
+
+    factory<ResetRegistrationUseCase> {
+        ResetRegistrationUseCaseImpl(
+            adoptMeRepository = get(),
+            cacheManager = get()
+        )
+    }
+
+    single<CacheManager> {
+        CacheManagerImpl()
+    }
+
+    single<TokenRepository> {
+        get<CacheManager>().registerCache(TokenRepositoryImpl(sharedPreferences = get()))
+    }
+
+    single {
+        EncryptedSharedPreferences.create(
+            "sharedPrefsFile",
+            MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
+            androidContext(),
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    } bind SharedPreferences::class
+
+    single<SmsClient> {
+        SmsClientImpl(androidContext())
+    }
+
+    single<SmsHandler> {
+        SmsHandlerImpl(
+            client = get()
         )
     }
 }
