@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -19,6 +20,9 @@ import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.snackbar.Snackbar
 import com.nikodem.adoptme.BR
 import com.nikodem.adoptme.R
+import com.nikodem.adoptme.ui.dialog.CancelRegistrationDialog
+import com.nikodem.adoptme.ui.dialog.ErrorDialog
+import com.nikodem.adoptme.ui.dialog.ErrorDialog.Companion.ERROR_DIALOG_TAG
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -96,6 +100,10 @@ abstract class BaseFragment<STATE : ViewState, VM : BaseViewModel<STATE>, VDB : 
             }
             showToastEvent.observe(viewLifecycleOwner) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+            showErrorDialogEvent.observe(viewLifecycleOwner) {
+                val dialog = ErrorDialog.create(it)
+                dialog.show(childFragmentManager, ERROR_DIALOG_TAG)
             }
         }
     }

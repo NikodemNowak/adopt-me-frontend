@@ -3,7 +3,6 @@ package com.nikodem.adoptme
 import android.app.Application
 import android.content.Context
 import android.os.StrictMode
-import androidx.databinding.ktx.BuildConfig
 import androidx.multidex.MultiDex
 import com.nikodem.adoptme.di.appModule
 import com.nikodem.adoptme.di.networkModule

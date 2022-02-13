@@ -35,12 +35,14 @@ class ConfirmOtpCodeFragment :
         super.onCreate(savedInstanceState)
         viewModel.onArgsReceived(args.authProcess)
 
+        Timber.d("Creating SMSBroadcastReceiver")
         smsBroadcastReceiver = SMSBroadcastReceiver { message ->
             Timber.d("Otp message received")
             viewModel.onSmsReceived(message.extractOtp())
         }
 
         lifecycleScope.launch {
+            Timber.d("Initializing smsHandler")
             smsHandler.initialize()
             requireContext().registerReceiver(
                 smsBroadcastReceiver,

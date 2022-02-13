@@ -21,6 +21,7 @@ abstract class BaseViewModel<STATE : ViewState>(
 
     val showToastEvent = LiveEvent<String>()
     val showSnackbarEvent = LiveEvent<String>()
+    val showErrorDialogEvent = LiveEvent<ErrorEvent>()
 
     protected fun updateViewState(update: (STATE) -> STATE) {
         val newState = update(_viewState.value!!)
@@ -29,17 +30,26 @@ abstract class BaseViewModel<STATE : ViewState>(
         }
     }
 
-    private val handler = CoroutineExceptionHandler { _, exception ->
-        Timber.e(exception, "CoroutineExceptionHandler")
-        handleError(exception as AdoptMeError)
+    open fun handleError(exception: Throwable, retryAction: () -> Unit) {
+        showErrorDialogEvent.fireEvent(ErrorEvent(exception, retryAction))
     }
 
-    open fun handleError(adoptMeError: AdoptMeError) {
+    protected fun safeLaunch(
+        onFailure: ((Throwable) -> Unit)? = null,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        viewModelScope.launch(
+            context = CoroutineExceptionHandler { _, exception ->
+                Timber.e(exception, "CoroutineExceptionHandler")
 
-    }
-
-    protected fun safeLaunch(block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(handler, block = block)
+                if (onFailure != null) {
+                    onFailure.invoke(exception)
+                } else {
+                    handleError(exception, retryAction = { safeLaunch(onFailure, block) })
+                }
+            },
+            block = block
+        )
     }
 }
 

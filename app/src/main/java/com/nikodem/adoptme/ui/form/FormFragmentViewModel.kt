@@ -79,11 +79,6 @@ class FormFragmentViewModel(
 
         }
     }
-
-    override fun handleError(adoptMeError: AdoptMeError) {
-        super.handleError(adoptMeError)
-        showToastEvent.fireEvent(adoptMeError.toString())
-    }
 }
 
 data class FormFragmentViewState(

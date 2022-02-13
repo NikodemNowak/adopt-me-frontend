@@ -41,6 +41,18 @@ class ConfirmOtpCodeFragmentViewModel(
         }
     }
 
+    fun onSmsReceived(otp: String?) {
+        otp?.let {
+            updateViewState {
+                it.copy(
+                    otpCode = otp
+                )
+            }
+
+            sendOtpCode()
+        }
+    }
+
     fun sendOtpCode() {
         safeLaunch {
             updateViewState { it.copy(isLoading = true) }
@@ -55,16 +67,6 @@ class ConfirmOtpCodeFragmentViewModel(
                 navigateToEndRegistration.fireEvent()
             } else {
                 navigateToEndLoggingIn.fireEvent()
-            }
-        }
-    }
-
-    fun onSmsReceived(otp: String?) {
-        otp?.let {
-            updateViewState {
-                it.copy(
-                    otpCode = otp
-                )
             }
         }
     }
