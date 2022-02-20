@@ -19,7 +19,9 @@ class GetQuestionAnswersUseCaseImpl(
         }
 
         if (!onlyCached) {
-            emit(adoptMeRepository.getQuestionAnswers())
+            val qa = adoptMeRepository.getQuestionAnswers()
+            emit(qa)
+            cachedAdoptMeRepository.saveQuestionAnswers(qa)
         }
     }
 }

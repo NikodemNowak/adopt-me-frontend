@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import com.nikodem.adoptme.utils.AdoptMeError
 import com.nikodem.adoptme.utils.ErrorEvent
 
-class ErrorDialog private constructor(): DialogFragment() {
+class ErrorDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let { fa ->
             (arguments?.get(ERROR_EVENT_KEY) as ErrorEvent?)?.let { errorEvent ->

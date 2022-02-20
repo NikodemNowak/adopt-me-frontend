@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginOrRegisterFragment">
+    app:startDestination="@id/homeScreenFragment">
 
     <fragment
         android:id="@+id/mainFragment"
@@ -14,8 +14,8 @@
         android:name="com.nikodem.adoptme.ui.form.QuestionFragment"
         android:label="FormFragment" >
         <action
-            android:id="@+id/action_formFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            android:id="@+id/action_formFragment_to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerUserFragment"
@@ -85,4 +85,8 @@
             android:id="@+id/action_endLoggingInFragment_to_formFragment"
             app:destination="@id/formFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/homeScreenFragment"
+        android:name="com.nikodem.adoptme.ui.home_screen.HomeScreenFragment"
+        android:label="HomeScreenFragment" />
 </navigation>
