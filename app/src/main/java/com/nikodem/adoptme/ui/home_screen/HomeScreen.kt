@@ -40,7 +40,7 @@ fun HomeScreen(
         ) {
             for (i in 0 until 20) {
                 item {
-                    AnimalListItem()
+                    AnimalListItem(viewModel::onItemClicked)
                 }
             }
 
@@ -72,7 +72,9 @@ fun HomeScreen(
 }
 
 @Composable
-fun AnimalListItem() {
+fun AnimalListItem(
+    onClicked: () -> Unit
+) {
     val interactionSource = remember { MutableInteractionSource() }
 
 //    val name = "Adam" - niepoprawne
@@ -85,9 +87,7 @@ fun AnimalListItem() {
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(bounded = true),
-                onClick = {
-
-                }
+                onClick = onClicked
             )
             .padding(bottom = 20.dp, top = 20.dp)
     ) {

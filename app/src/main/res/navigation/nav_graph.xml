@@ -88,5 +88,13 @@
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.nikodem.adoptme.ui.home_screen.HomeScreenFragment"
-        android:label="HomeScreenFragment" />
+        android:label="HomeScreenFragment" >
+        <action
+            android:id="@+id/to_detailsScreenFragment"
+            app:destination="@id/detailsScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsScreenFragment"
+        android:name="com.nikodem.adoptme.ui.home_screen.details_screen.DetailsScreenFragment"
+        android:label="DetailsScreenFragment" />
 </navigation>

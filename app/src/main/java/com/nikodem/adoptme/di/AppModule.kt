@@ -13,6 +13,7 @@ import com.nikodem.adoptme.ui.end_registration.EndRegistrationFragmentViewModel
 import com.nikodem.adoptme.ui.favorites.FavoritesFragmentViewModel
 import com.nikodem.adoptme.ui.form.FormFragmentViewModel
 import com.nikodem.adoptme.ui.home_screen.HomeScreenFragmentViewModel
+import com.nikodem.adoptme.ui.home_screen.details_screen.DetailsScreenFragmentViewModel
 import com.nikodem.adoptme.ui.login.LoginFragmentViewModel
 import com.nikodem.adoptme.ui.login_or_register.LoginOrRegisterFragmentViewModel
 import com.nikodem.adoptme.ui.main.MainFragmentViewModel
@@ -31,6 +32,8 @@ val appModule = module {
     viewModel { MainFragmentViewModel() }
 
     viewModel { HomeScreenFragmentViewModel() }
+
+    viewModel { DetailsScreenFragmentViewModel() }
 
     viewModel { ProfileFragmentViewModel() }
 
