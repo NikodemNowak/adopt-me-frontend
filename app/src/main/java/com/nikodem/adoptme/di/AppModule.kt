@@ -2,7 +2,6 @@ package com.nikodem.adoptme.di
 
 import android.content.SharedPreferences
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.nikodem.adoptme.db.AppDatabase
@@ -12,6 +11,7 @@ import com.nikodem.adoptme.ui.end_logging_in.EndLoggingInFragmentViewModel
 import com.nikodem.adoptme.ui.end_registration.EndRegistrationFragmentViewModel
 import com.nikodem.adoptme.ui.favorites.FavoritesFragmentViewModel
 import com.nikodem.adoptme.ui.form.FormFragmentViewModel
+import com.nikodem.adoptme.ui.home_screen.AnimalMediator
 import com.nikodem.adoptme.ui.home_screen.HomeScreenFragmentViewModel
 import com.nikodem.adoptme.ui.home_screen.details_screen.DetailsScreenFragmentViewModel
 import com.nikodem.adoptme.ui.login.LoginFragmentViewModel
@@ -31,7 +31,16 @@ val appModule = module {
 
     viewModel { MainFragmentViewModel() }
 
-    viewModel { HomeScreenFragmentViewModel() }
+    viewModel {
+        HomeScreenFragmentViewModel(
+            getAnimalsUseCase = get(),
+            animalMediator = AnimalMediator(
+                database = get(),
+                adoptMeRepository = get()
+            ),
+            animalDao = get<AppDatabase>().animalDao()
+        )
+    }
 
     viewModel { DetailsScreenFragmentViewModel() }
 
@@ -91,13 +100,21 @@ val appModule = module {
         get<CacheManager>().registerCache(
             CachedAdoptMeRepositoryImpl(
                 userDao = get<AppDatabase>().userDao(),
-                questionAnswersDao = get<AppDatabase>().questionAnswersDao()
+                questionAnswersDao = get<AppDatabase>().questionAnswersDao(),
+                animalDao = get<AppDatabase>().animalDao()
             )
         )
     }
 
     factory<GetQuestionAnswersUseCase> {
         GetQuestionAnswersUseCaseImpl(
+            cachedAdoptMeRepository = get(),
+            adoptMeRepository = get()
+        )
+    }
+
+    factory<GetAnimalsUseCase> {
+        GetAnimalsUseCaseImpl(
             cachedAdoptMeRepository = get(),
             adoptMeRepository = get()
         )

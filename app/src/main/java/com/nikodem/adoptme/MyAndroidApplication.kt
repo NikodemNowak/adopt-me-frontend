@@ -4,8 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.os.StrictMode
 import androidx.multidex.MultiDex
+import coil.Coil
+import coil.ImageLoader
+import coil.util.CoilUtils
 import com.nikodem.adoptme.di.appModule
 import com.nikodem.adoptme.di.networkModule
+import okhttp3.OkHttp
+import okhttp3.OkHttpClient
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,13 +23,23 @@ class MyAndroidApplication : Application() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-            StrictMode.enableDefaults()
+//            StrictMode.enableDefaults()
         }
 
         startKoin {
 //            androidLogger()
             androidContext(this@MyAndroidApplication)
             modules(networkModule, appModule)
+        }
+
+        val coilOkHttpClient = get<OkHttpClient>().newBuilder()
+            .cache(CoilUtils.createDefaultCache(applicationContext))
+            .build()
+
+        Coil.setImageLoader {
+            ImageLoader.Builder(applicationContext)
+                .okHttpClient(coilOkHttpClient)
+                .build()
         }
     }
 

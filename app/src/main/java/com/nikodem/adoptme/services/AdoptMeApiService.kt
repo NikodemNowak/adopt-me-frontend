@@ -24,4 +24,10 @@ interface AdoptMeApiService {
 
     @GET("register/nextOnboardingStep")
     fun getNextOnboardingStep(@Header("session") session: String): ApiResult<String>
+
+    @GET("animals")
+    suspend fun getAnimals(
+        @Query("animalType") animalType: String? = null,
+        @Query("page") page: Int
+    ): ApiResult<List<AnimalResponse>>
 }

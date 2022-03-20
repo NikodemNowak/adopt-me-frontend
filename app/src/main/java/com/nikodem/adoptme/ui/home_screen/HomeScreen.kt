@@ -1,5 +1,6 @@
 package com.nikodem.adoptme.ui.home_screen
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,31 +19,70 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import com.nikodem.adoptme.R
+import com.nikodem.adoptme.db.entity.AnimalDB
 import com.nikodem.adoptme.ui.theme.*
+import com.nikodem.adoptme.usecases.Animal
+import com.nikodem.adoptme.utils.nullableString
 
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenFragmentViewModel
 ) {
     val data by viewModel.viewState.observeAsState(viewModel.currentState)
+    val animals = viewModel.animals.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
             MyTopBar()
         }
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            for (i in 0 until 20) {
-                item {
-                    AnimalListItem(viewModel::onItemClicked)
+        val loadState = animals.loadState
+
+        if (loadState.refresh is LoadState.Loading || loadState.source.refresh is LoadState.Loading) {
+            Text(
+                modifier = Modifier.padding(vertical = 20.dp),
+                text = "Loading..."
+            )
+        } else if (animals.loadState.mediator?.refresh is LoadState.Error) {
+            Text(text = "Cos poszlo nie tak")
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(animals) { animal ->
+                    animal?.let {
+                        AnimalListItem(
+                            animal,
+                            viewModel::onItemClicked
+                        )
+                    }
                 }
-            }
+
+                item {
+                    AnimatedVisibility(
+                        visible = animals.loadState.mediator?.append is LoadState.Loading,
+                        enter = fadeIn(
+                            // Fade in with the initial alpha of 0.3f.
+                            initialAlpha = 0.5f
+                        ),
+                        exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(vertical = 20.dp),
+                            text = "Loading..."
+                        )
+                    }
+                }
+
 
 //            item {
 //                Text(text = "hej")
@@ -67,13 +107,15 @@ fun HomeScreen(
 //                }
 //            }
 
+            }
         }
     }
 }
 
 @Composable
 fun AnimalListItem(
-    onClicked: () -> Unit
+    animal: AnimalDB,
+    onClicked: (String) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -87,7 +129,9 @@ fun AnimalListItem(
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(bounded = true),
-                onClick = onClicked
+                onClick = {
+                    onClicked.invoke(animal.animalId)
+                }
             )
             .padding(bottom = 20.dp, top = 20.dp)
     ) {
@@ -98,7 +142,7 @@ fun AnimalListItem(
                 .size(90.dp)
                 .clip(RoundedCornerShape(20.dp)),
             painter = rememberImagePainter(
-                data = "https://i.guim.co.uk/img/media/fe1e34da640c5c56ed16f76ce6f994fa9343d09d/0_174_3408_2046/master/3408.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=0d3f33fb6aa6e0154b7713a00454c83d",
+                data = animal.photo,
                 builder = {
                     crossfade(true)
                     placeholder(R.drawable.ic_baseline_assignment_ind_24)
@@ -110,14 +154,13 @@ fun AnimalListItem(
 
         Column {
             Text(
-                text = "Scrappy",
+                text = animal.name.nullableString(),
                 style = MaterialTheme.typography.mySuperFontStyle
             )
 
             Text(
-                text = "aksdma sljdnaj kdnajsdnjan sdjasdnkas ndjdsad aksdma sljdnaj kdnajsdnjan sdjasdnkas ndjdsad",
-                style = MaterialTheme.typography.mySecondFontStyle
-
+                text = animal.description.nullableString(),
+                style = MaterialTheme.typography.mySecondFontStyle,
             )
         }
     }
@@ -220,7 +263,7 @@ fun ChipGroup(
     }
 }
 
-enum class AnimalType(val value: String){
+enum class AnimalType(val value: String) {
     ALL("All animals"),
     DOGS("Dogs"),
     CATS("Cats"),

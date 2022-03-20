@@ -2,10 +2,12 @@ package com.nikodem.adoptme.repositories
 
 import com.nikodem.adoptme.NextOnboardingStep
 import com.nikodem.adoptme.services.*
+import com.nikodem.adoptme.usecases.Animal
 import com.nikodem.adoptme.usecases.QuestionAnswers
 import com.nikodem.adoptme.usecases.Session
 import com.nikodem.adoptme.usecases.Token
 import com.nikodem.adoptme.utils.NetworkHandler
+import kotlinx.coroutines.delay
 
 interface AdoptMeRepository {
     suspend fun getQuestionAnswers(): List<QuestionAnswers>
@@ -15,6 +17,7 @@ interface AdoptMeRepository {
     suspend fun setPin(userSetPin: UserSetPin): Token
     suspend fun getNextOnboardingStep(): NextOnboardingStep
     suspend fun resetRegistration()
+    suspend fun getAnimals(page: Int, pageSize: Int): List<Animal>
 }
 
 class AdoptMeRepositoryImpl(
@@ -64,7 +67,18 @@ class AdoptMeRepositoryImpl(
             adoptMeApiService.deleteUserBySession(tokenRepository.getSession()!!)
         }
     }
+
+    override suspend fun getAnimals(page: Int, pageSize: Int): List<Animal> {
+        delay(2000L)
+        return networkHandler.safeNetworkCall {
+            adoptMeApiService.getAnimals(page = page)
+        }.map { it.toDomain() }
+    }
 }
+
+fun AnimalResponse.toDomain() = Animal(
+    animalId, animalType, race, color, shelter, privateOwner, age, name, photo, description
+)
 
 fun QuestionAnswersResponse.toDomain() = QuestionAnswers(
     uuid = id,
