@@ -1,6 +1,5 @@
 package com.nikodem.adoptme.ui.home_screen
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -19,17 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.LoadStates
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import com.nikodem.adoptme.R
 import com.nikodem.adoptme.db.entity.AnimalDB
 import com.nikodem.adoptme.ui.theme.*
-import com.nikodem.adoptme.usecases.Animal
 import com.nikodem.adoptme.utils.nullableString
 
 @Composable
@@ -39,9 +36,11 @@ fun HomeScreen(
     val data by viewModel.viewState.observeAsState(viewModel.currentState)
     val animals = viewModel.animals.collectAsLazyPagingItems()
 
+    val lazyListState = rememberLazyListState()
+
     Scaffold(
         topBar = {
-            MyTopBar()
+            MyTopBar(viewModel::navigateToProfile)
         }
     ) {
         val loadState = animals.loadState
@@ -55,8 +54,9 @@ fun HomeScreen(
             Text(text = "Cos poszlo nie tak")
         } else {
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                state = lazyListState
             ) {
                 items(animals) { animal ->
                     animal?.let {
@@ -67,22 +67,14 @@ fun HomeScreen(
                     }
                 }
 
-                item {
-                    AnimatedVisibility(
-                        visible = animals.loadState.mediator?.append is LoadState.Loading,
-                        enter = fadeIn(
-                            // Fade in with the initial alpha of 0.3f.
-                            initialAlpha = 0.5f
-                        ),
-                        exit = slideOutVertically() + shrinkVertically() + fadeOut()
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(vertical = 20.dp),
-                            text = "Loading..."
-                        )
+                if (loadState.append is LoadState.Error) {
+                    item {
+                        Text(text = "blad ladowania")
+                        Button(onClick = {}) {
+                            Text(text = "Retry")
+                        }
                     }
                 }
-
 
 //            item {
 //                Text(text = "hej")
@@ -108,6 +100,24 @@ fun HomeScreen(
 //            }
 
             }
+
+//            AnimatedVisibility(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .background(Color.White),
+//                visible = animals.loadState.mediator?.append is LoadState.Loading,
+//                enter = fadeIn(
+//                    // Fade in with the initial alpha of 0.3f.
+//                    initialAlpha = 0.5f
+//                ),
+//                exit = slideOutVertically() + shrinkVertically() + fadeOut()
+//            ) {
+//                Text(
+//                    modifier = Modifier.padding(vertical = 20.dp),
+//                    text = "Loading..."
+//                )
+//            }
+
         }
     }
 }
@@ -160,14 +170,14 @@ fun AnimalListItem(
 
             Text(
                 text = animal.description.nullableString(),
-                style = MaterialTheme.typography.mySecondFontStyle,
+                style = MaterialTheme.typography.BO50FS15,
             )
         }
     }
 }
 
 @Composable
-fun MyTopBar() {
+fun MyTopBar(navigateToProfile: () -> Unit) {
     var animalType by remember { mutableStateOf(AnimalType.ALL) }
 
     Column(
@@ -178,17 +188,22 @@ fun MyTopBar() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                Text(text = "Shelter", style = MaterialTheme.typography.myTitleFontStyle)
+                Text(text = "Shelter", style = MaterialTheme.typography.BFS25BOLD)
                 Text(
                     text = "Give a house to one of our charges.",
-                    style = MaterialTheme.typography.mySecondFontStyle
+                    style = MaterialTheme.typography.BO50FS15
                 )
             }
 
             Image(
                 modifier = Modifier
                     .size(60.dp)
-                    .clip(RoundedCornerShape(20.dp)),
+                    .clip(RoundedCornerShape(20.dp))
+                    .clickable(
+                        enabled = true,
+                        onClickLabel = "Profile",
+                        onClick = navigateToProfile
+                    ),
                 painter = rememberImagePainter(
                     data = "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528",
                     builder = {

@@ -2,11 +2,16 @@ package com.nikodem.adoptme.repositories
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import java.lang.RuntimeException
+
+class NoTokenStoredException : RuntimeException()
 
 interface TokenRepository {
     fun setTokens(accessToken: String, refreshToken: String)
     fun setSession(session: String)
     fun getSession(): String?
+    fun getAccessToken(): String
+    fun getRefreshToken(): String
 }
 
 class TokenRepositoryImpl(
@@ -27,6 +32,14 @@ class TokenRepositoryImpl(
 
     override fun getSession(): String? {
         return sharedPreferences.getString(SESSION, "")
+    }
+
+    override fun getAccessToken(): String {
+        return sharedPreferences.getString(ACCESS_TOKEN, null) ?: throw NoTokenStoredException()
+    }
+
+    override fun getRefreshToken(): String {
+        return sharedPreferences.getString(REFRESH_TOKEN, null) ?: throw NoTokenStoredException()
     }
 
     override fun invalidate() {

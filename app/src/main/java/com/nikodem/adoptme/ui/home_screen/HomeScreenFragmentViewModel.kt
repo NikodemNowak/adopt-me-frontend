@@ -6,6 +6,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.nikodem.adoptme.BuildConfig
 import com.nikodem.adoptme.db.dao.AnimalDao
 import com.nikodem.adoptme.usecases.Animal
 import com.nikodem.adoptme.usecases.GetAnimalsUseCase
@@ -41,6 +42,10 @@ class HomeScreenFragmentViewModel(
 
     fun onItemClicked(animalId: String) {
         navigateTo(HomeScreenFragmentDirections.toDetailsScreenFragment())
+    }
+
+    fun navigateToProfile() {
+        navigateTo(HomeScreenFragmentDirections.actionHomeScreenFragmentToProfileScreenFragment())
     }
 }
 

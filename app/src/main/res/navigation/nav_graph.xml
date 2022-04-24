@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeScreenFragment">
+    app:startDestination="@id/splashScreenFragment">
+
 
     <fragment
         android:id="@+id/mainFragment"
@@ -91,10 +92,32 @@
         android:label="HomeScreenFragment" >
         <action
             android:id="@+id/to_detailsScreenFragment"
+            app:enterAnim="@anim/slide_enter_2_shorter"
+            app:popEnterAnim="@anim/slide_pop_enter_2"
+            app:exitAnim="@anim/slide_exit_2_shorter"
+            app:popExitAnim="@anim/slide_pop_exit_2"
             app:destination="@id/detailsScreenFragment" />
+        <action
+            android:id="@+id/action_homeScreenFragment_to_profileScreenFragment"
+            app:destination="@id/profileScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsScreenFragment"
         android:name="com.nikodem.adoptme.ui.home_screen.details_screen.DetailsScreenFragment"
         android:label="DetailsScreenFragment" />
+    <fragment
+        android:id="@+id/profileScreenFragment"
+        android:name="com.nikodem.adoptme.ui.profile_screen.ProfileScreenFragment"
+        android:label="ProfileScreenFragment" />
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.nikodem.adoptme.ui.splash_screen.SplashScreenFragment"
+        android:label="SplashScreenFragment" >
+        <action
+            android:id="@+id/to_loginOrRegisterFragment"
+            app:destination="@id/loginOrRegisterFragment" />
+        <action
+            android:id="@+id/to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
+    </fragment>
 </navigation>

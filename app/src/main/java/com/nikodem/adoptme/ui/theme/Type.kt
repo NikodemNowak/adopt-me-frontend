@@ -84,7 +84,7 @@ val Typography.mySuperFontStyle: TextStyle
     )
 
 @get:Composable
-val Typography.mySecondFontStyle: TextStyle
+val Typography.BO50FS15: TextStyle
     get() = TextStyle(
         fontSize = 15.sp,
         letterSpacing = (-0.1).sp,
@@ -92,10 +92,34 @@ val Typography.mySecondFontStyle: TextStyle
     )
 
 @get:Composable
-val Typography.myTitleFontStyle: TextStyle
+val Typography.BO50FS10: TextStyle
+    get() = TextStyle(
+        fontSize = 10.sp,
+        letterSpacing = (-0.1).sp,
+        color = BlackOpacity50
+    )
+
+@get:Composable
+val Typography.BFS25BOLD: TextStyle
     get() = TextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 25.sp,
         letterSpacing = (-0.1).sp,
         color = Black
+    )
+
+@get:Composable
+val Typography.BFS20: TextStyle
+    get() = TextStyle(
+        fontSize = 20.sp,
+        letterSpacing = (-0.1).sp,
+        color = Black
+    )
+
+@get:Composable
+val Typography.RFS20: TextStyle
+    get() = TextStyle(
+        fontSize = 20.sp,
+        letterSpacing = (-0.1).sp,
+        color = Red
     )

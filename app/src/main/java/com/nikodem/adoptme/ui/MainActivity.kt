@@ -2,6 +2,7 @@ package com.nikodem.adoptme.ui
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.commit
 import com.nikodem.adoptme.R
 
 class MainActivity : FragmentActivity() {

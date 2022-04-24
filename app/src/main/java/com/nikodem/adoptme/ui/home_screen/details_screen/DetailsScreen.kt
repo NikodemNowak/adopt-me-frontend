@@ -1,8 +1,6 @@
 package com.nikodem.adoptme.ui.home_screen.details_screen
 
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -14,11 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.nikodem.adoptme.R
-import com.nikodem.adoptme.ui.theme.mySecondFontStyle
+import com.nikodem.adoptme.ui.theme.BO50FS15
 import com.nikodem.adoptme.ui.theme.mySuperFontStyle
 
 @Composable
@@ -47,7 +44,7 @@ fun DetailsScreen(
                         Text(text = "Scrappy", style = MaterialTheme.typography.mySuperFontStyle)
                         Text(
                             text = "A beloved puppy asks for a home",
-                            style = MaterialTheme.typography.mySecondFontStyle
+                            style = MaterialTheme.typography.BO50FS15
                         )
                     }
 
@@ -78,7 +75,7 @@ fun DetailsScreen(
                 Row(modifier = Modifier.padding(all = 10.dp)) {
                     Text(
                         text = "askndsjdnasdnasjkdnsadnsadnaskjdnaskndsjdnasdnasjkdnsadnsadnaskjdnaskndsjdnasdnasjkdnsadnsadnaskjdnaskndsjdnasdnasjkdnsadnsadnaskjdnaskndsjdnasdnasjkdnsadnsadnaskjdnaskndsjdnasdnasjkdnsadnsadnaskjdnaskndsjdnasdnasjkdnsadnsadnaskjdn",
-                        style = MaterialTheme.typography.mySecondFontStyle
+                        style = MaterialTheme.typography.BO50FS15
                     )
                 }
             }

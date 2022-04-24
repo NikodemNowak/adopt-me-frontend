@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val Black = Color.Black
+val Red = Color.Red
 val White = Color.White
 val Red200 = Color(0xfff297a2)
 val Red300 = Color(0xffea6d7e)

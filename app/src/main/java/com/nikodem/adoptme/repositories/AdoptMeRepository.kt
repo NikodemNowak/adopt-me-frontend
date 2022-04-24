@@ -2,10 +2,7 @@ package com.nikodem.adoptme.repositories
 
 import com.nikodem.adoptme.NextOnboardingStep
 import com.nikodem.adoptme.services.*
-import com.nikodem.adoptme.usecases.Animal
-import com.nikodem.adoptme.usecases.QuestionAnswers
-import com.nikodem.adoptme.usecases.Session
-import com.nikodem.adoptme.usecases.Token
+import com.nikodem.adoptme.usecases.*
 import com.nikodem.adoptme.utils.NetworkHandler
 import kotlinx.coroutines.delay
 
@@ -18,6 +15,7 @@ interface AdoptMeRepository {
     suspend fun getNextOnboardingStep(): NextOnboardingStep
     suspend fun resetRegistration()
     suspend fun getAnimals(page: Int, pageSize: Int): List<Animal>
+    suspend fun getUser(accessToken: String): User
 }
 
 class AdoptMeRepositoryImpl(
@@ -74,6 +72,12 @@ class AdoptMeRepositoryImpl(
             adoptMeApiService.getAnimals(page = page)
         }.map { it.toDomain() }
     }
+
+    override suspend fun getUser(accessToken: String): User {
+        return networkHandler.safeNetworkCall {
+            adoptMeApiService.getUser(accessToken)
+        }.toDomain()
+    }
 }
 
 fun AnimalResponse.toDomain() = Animal(
@@ -92,3 +96,5 @@ fun QuestionAnswersResponse.toDomain() = QuestionAnswers(
 fun SessionResponse.toDomain() = Session(session)
 
 fun TokenResponse.toDomain() = Token(accessToken, refreshToken)
+
+fun UserResponse.toDomain() = User(firstName, lastName, city, phoneNumber, email)

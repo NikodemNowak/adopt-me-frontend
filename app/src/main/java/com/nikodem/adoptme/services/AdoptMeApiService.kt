@@ -22,6 +22,9 @@ interface AdoptMeApiService {
     @DELETE("users/{session}")
     fun deleteUserBySession(@Path("session") session: String): ApiResult<Unit>
 
+    @GET("user")
+    fun getUser(@Body accessToken: String): ApiResult<UserResponse>
+
     @GET("register/nextOnboardingStep")
     fun getNextOnboardingStep(@Header("session") session: String): ApiResult<String>
 
