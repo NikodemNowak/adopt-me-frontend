@@ -14,10 +14,19 @@ interface AdoptMeApiService {
     suspend fun addUser(@Body userPostRequest: UserPostRequest): ApiResult<SessionResponse>
 
     @POST("register/verifyOtp")
-    suspend fun verifyOtp(@Body userVerifyOtp: UserVerifyOtp): ApiResult<SessionResponse>
+    suspend fun verifyRegisterOtp(@Body userVerifyOtp: UserVerifyOtp): ApiResult<SessionResponse>
 
     @POST("register/setPin")
     suspend fun setPin(@Body userSetPin: UserSetPin): ApiResult<TokenResponse>
+
+    @POST("login/sendOtp")
+    suspend fun sendOtp(@Body userPostLoginRequest: UserPostLoginRequest): ApiResult<SessionResponse>
+
+    @POST("login/verifyOtp")
+    suspend fun verifyLoginOtp(@Body userVerifyOtp: UserVerifyOtp): ApiResult<SessionResponse>
+
+    @POST("login/verifyPin")
+    suspend fun verifyPin(@Body userVerifyPin: UserVerifyPin): ApiResult<TokenResponse>
 
     @DELETE("users/{session}")
     fun deleteUserBySession(@Path("session") session: String): ApiResult<Unit>

@@ -23,7 +23,6 @@ import com.nikodem.adoptme.ui.register_shelter.RegisterShelterFragmentViewModel
 import com.nikodem.adoptme.ui.register_user.RegisterUserFragmentViewModel
 import com.nikodem.adoptme.ui.splash_screen.SplashScreenFragmentViewModel
 import com.nikodem.adoptme.usecases.*
-import okhttp3.internal.cacheGet
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.bind
@@ -70,7 +69,8 @@ val appModule = module {
     viewModel {
         ConfirmOtpCodeFragmentViewModel(
             savedStateHandle = get(),
-            verifyOtpUseCase = get()
+            verifyRegisterOtpUseCase = get(),
+            verifyLoginOtpUseCase = get()
         )
     }
 
@@ -79,11 +79,11 @@ val appModule = module {
     viewModel { RegisterShelterFragmentViewModel() }
 
     viewModel {
-        LoginFragmentViewModel()
+        LoginFragmentViewModel(sendOtpUseCase = get())
     }
 
     viewModel {
-        EndLoggingInFragmentViewModel()
+        EndLoggingInFragmentViewModel(verifyPinUseCase = get())
     }
 
     viewModel {
@@ -144,8 +144,8 @@ val appModule = module {
         )
     }
 
-    factory<VerifyOtpUseCase> {
-        VerifyOtpUseCaseImpl(
+    factory<VerifyRegisterOtpUseCase> {
+        VerifyRegisterOtpUseCaseImpl(
             adoptMeRepository = get(),
             tokenRepository = get()
         )
@@ -174,6 +174,27 @@ val appModule = module {
 
     factory<IsLoggedInUseCase> {
         IsLoggedInUseCaseImpl(
+            tokenRepository = get()
+        )
+    }
+
+    factory<SendOtpUseCase> {
+        SendOtpUseCaseImpl(
+            adoptMeRepository = get(),
+            tokenRepository = get()
+        )
+    }
+
+    factory<VerifyLoginOtpUseCase> {
+        VerifyLoginOtpUseCaseImpl(
+            adoptMeRepository = get(),
+            tokenRepository = get()
+        )
+    }
+
+    factory<VerifyPinUseCase> {
+        VerifyPinUseCaseImpl(
+            adoptMeRepository = get(),
             tokenRepository = get()
         )
     }

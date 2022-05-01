@@ -2,6 +2,7 @@ package com.nikodem.adoptme.ui.login
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.nikodem.adoptme.R
 import com.nikodem.adoptme.databinding.FragmentLoginBinding
@@ -15,7 +16,12 @@ class LoginFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.loginButton.setOnClickListener {
+
+        binding.phoneNumberEditText.doOnTextChanged { text, _, _, _ ->
+            viewModel.onPhoneNumberChange(text.toString())
+        }
+
+        viewModel.navigateToVerifyOtpCodeFragment.observe(viewLifecycleOwner) {
             findNavController().navigate(
                 LoginFragmentDirections.actionLoginFragmentToConfirmOtpCodeFragment(
                     authProcess = AuthProcess.LOGIN

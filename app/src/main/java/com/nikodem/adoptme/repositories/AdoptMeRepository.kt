@@ -10,12 +10,15 @@ interface AdoptMeRepository {
     suspend fun getQuestionAnswers(): List<QuestionAnswers>
     suspend fun addUserPreferences(userPreferencesPostRequest: UserPreferencesPostRequest)
     suspend fun addUser(userPostRequest: UserPostRequest): Session
-    suspend fun verifyOtp(userVerifyOtp: UserVerifyOtp): Session
+    suspend fun verifyRegisterOtp(userVerifyOtp: UserVerifyOtp): Session
     suspend fun setPin(userSetPin: UserSetPin): Token
     suspend fun getNextOnboardingStep(): NextOnboardingStep
     suspend fun resetRegistration()
     suspend fun getAnimals(page: Int, pageSize: Int): List<Animal>
     suspend fun getUser(accessToken: String): User
+    suspend fun sendOtp(userPostLoginRequest: UserPostLoginRequest): Session
+    suspend fun verifyLoginOtp(userVerifyOtp: UserVerifyOtp): Session
+    suspend fun verifyPin(userVerifyPin: UserVerifyPin): Token
 }
 
 class AdoptMeRepositoryImpl(
@@ -41,15 +44,33 @@ class AdoptMeRepositoryImpl(
         }.toDomain()
     }
 
-    override suspend fun verifyOtp(userVerifyOtp: UserVerifyOtp): Session {
+    override suspend fun sendOtp(userPostLoginRequest: UserPostLoginRequest): Session {
         return networkHandler.safeNetworkCall {
-            adoptMeApiService.verifyOtp(userVerifyOtp)
+            adoptMeApiService.sendOtp(userPostLoginRequest)
+        }.toDomain()
+    }
+
+    override suspend fun verifyRegisterOtp(userVerifyOtp: UserVerifyOtp): Session {
+        return networkHandler.safeNetworkCall {
+            adoptMeApiService.verifyRegisterOtp(userVerifyOtp)
+        }.toDomain()
+    }
+
+    override suspend fun verifyLoginOtp(userVerifyOtp: UserVerifyOtp): Session {
+        return networkHandler.safeNetworkCall {
+            adoptMeApiService.verifyLoginOtp(userVerifyOtp)
         }.toDomain()
     }
 
     override suspend fun setPin(userSetPin: UserSetPin): Token {
         return networkHandler.safeNetworkCall {
             adoptMeApiService.setPin(userSetPin)
+        }.toDomain()
+    }
+
+    override suspend fun verifyPin(userVerifyPin: UserVerifyPin): Token {
+        return networkHandler.safeNetworkCall {
+            adoptMeApiService.verifyPin(userVerifyPin)
         }.toDomain()
     }
 

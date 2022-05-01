@@ -4,27 +4,27 @@ import com.nikodem.adoptme.repositories.AdoptMeRepository
 import com.nikodem.adoptme.repositories.TokenRepository
 import com.nikodem.adoptme.services.UserVerifyOtp
 
-interface VerifyOtpUseCase {
+interface VerifyLoginOtpUseCase {
     suspend fun invoke(verifyOtp: String)
 }
 
-class VerifyOtpUseCaseImpl(
+class VerifyLoginOtpUseCaseImpl(
     private val adoptMeRepository: AdoptMeRepository,
     private val tokenRepository: TokenRepository
-) : VerifyOtpUseCase {
+) : VerifyLoginOtpUseCase {
     override suspend fun invoke(verifyOtp: String) {
         if (!tokenRepository.getSession().isNullOrEmpty()) {
-            val session = adoptMeRepository.verifyOtp(
-                VerifyOtp(
-                    verifyOtp,
-                    tokenRepository.getSession()!!
-                ).toNetwork()
-            )
-            tokenRepository.setSession(session = session.session)
+            val session =
+                adoptMeRepository.verifyLoginOtp(
+                    VerifyOtp(
+                        verifyOtp,
+                        tokenRepository.getSession()!!
+                    ).toNetwork1()
+                )
+            tokenRepository.setSession(session.session)
         }
-
     }
 
 }
 
-fun VerifyOtp.toNetwork() = UserVerifyOtp(otpCode, session)
+fun VerifyOtp.toNetwork1() = UserVerifyOtp(otpCode, session)

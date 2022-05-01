@@ -2,14 +2,16 @@ package com.nikodem.adoptme.ui.confirm_otp_code
 
 import androidx.lifecycle.SavedStateHandle
 import com.hadilq.liveevent.LiveEvent
-import com.nikodem.adoptme.usecases.VerifyOtpUseCase
+import com.nikodem.adoptme.usecases.VerifyLoginOtpUseCase
+import com.nikodem.adoptme.usecases.VerifyRegisterOtpUseCase
 import com.nikodem.adoptme.utils.BaseViewModel
 import com.nikodem.adoptme.utils.ViewState
 import com.nikodem.adoptme.utils.fireEvent
 
 class ConfirmOtpCodeFragmentViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val verifyOtpUseCase: VerifyOtpUseCase
+    private val verifyRegisterOtpUseCase: VerifyRegisterOtpUseCase,
+    private val verifyLoginOtpUseCase: VerifyLoginOtpUseCase
 ) : BaseViewModel<ConfirmOtpCodeFragmentViewState>(initialState = ConfirmOtpCodeFragmentViewState()) {
 
     val navigateToEndRegistration: LiveEvent<Unit> = LiveEvent()
@@ -57,8 +59,10 @@ class ConfirmOtpCodeFragmentViewModel(
         safeLaunch {
             updateViewState { it.copy(isLoading = true) }
 
-            with(viewState.value!!) {
-                verifyOtpUseCase.invoke(otpCode)
+            if (viewState.value!!.authProcess == AuthProcess.REGISTER) {
+                verifyRegisterOtpUseCase.invoke(viewState.value!!.otpCode)
+            } else {
+                verifyLoginOtpUseCase.invoke(viewState.value!!.otpCode)
             }
 
             updateViewState { it.copy(isLoading = false) }

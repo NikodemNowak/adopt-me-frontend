@@ -2,6 +2,7 @@ package com.nikodem.adoptme.ui.end_logging_in
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.nikodem.adoptme.R
 import com.nikodem.adoptme.databinding.FragmentEndLogingInBinding
@@ -14,8 +15,17 @@ class EndLoggingInFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.loggingButton.setOnClickListener {
+        viewModel.navigateToFormFragmentEvent.observe(viewLifecycleOwner) {
             findNavController().navigate(EndLoggingInFragmentDirections.actionEndLoggingInFragmentToFormFragment())
+        }
+
+        binding.editText2.doOnTextChanged { text, _, _, _ ->
+            viewModel.onPinChange(text.toString())
+        }
+
+
+        binding.loggingButton.setOnClickListener {
+            viewModel.onRegisterButtonClick()
         }
     }
 }

@@ -57,9 +57,6 @@ class ConfirmOtpCodeFragment :
         super.onViewCreated(view, savedInstanceState)
 //        viewModel.restoreState()
 
-        onBackEvent = {
-        }
-
         binding.otpCode.doOnTextChanged { text, start, before, count ->
             viewModel.onOtpCodeChange(text.toString())
         }

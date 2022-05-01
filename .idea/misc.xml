@@ -26,6 +26,7 @@
         <entry key="app/src/main/res/layout/fragment_form_question.xml" value="0.2874873353596758" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home_screen.xml" value="0.12158054711246201" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_register_user.xml" value="0.1" />
       </map>
     </option>
