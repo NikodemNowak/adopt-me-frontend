@@ -41,7 +41,7 @@ fun ProfileScreen(
                             .size(100.dp)
                             .clip(RoundedCornerShape(50.dp)),
                         painter = rememberImagePainter(
-                            data = "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528",
+                            data = data.profilePicture,
                             builder = {
                                 crossfade(true)
                                 placeholder(R.drawable.ic_baseline_assignment_ind_24)

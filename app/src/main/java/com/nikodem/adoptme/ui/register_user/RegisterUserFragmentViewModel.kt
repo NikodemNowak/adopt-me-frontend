@@ -123,7 +123,7 @@ class RegisterUserFragmentViewModel(
                 with(viewState.value!!) {
                     addUserUseCase.invoke(
                         User(
-                            firstName, lastName, city, phoneNumber, email
+                            firstName, lastName, city, phoneNumber, email, null
                         )
                     )
                 }

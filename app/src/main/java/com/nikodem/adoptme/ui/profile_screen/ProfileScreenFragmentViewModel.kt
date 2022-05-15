@@ -32,7 +32,8 @@ class ProfileScreenFragmentViewModel(
                     firstName = user.firstName,
                     lastName = user.lastName,
                     phoneNumber = user.phoneNumber,
-                    email = user.email
+                    email = user.email,
+                    profilePicture = user.profilePicture!!
                 )
             }
         }
@@ -44,5 +45,6 @@ data class ProfileScreenFragmentViewState(
     val firstName: String = "",
     val lastName: String = "",
     val phoneNumber: String = "",
-    val email: String = ""
+    val email: String = "",
+    val profilePicture: String = ""
 ) : ViewState

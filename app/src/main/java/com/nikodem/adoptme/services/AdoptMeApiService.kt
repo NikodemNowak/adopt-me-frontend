@@ -29,13 +29,13 @@ interface AdoptMeApiService {
     suspend fun verifyPin(@Body userVerifyPin: UserVerifyPin): ApiResult<TokenResponse>
 
     @DELETE("users/{session}")
-    fun deleteUserBySession(@Path("session") session: String): ApiResult<Unit>
+    suspend fun deleteUserBySession(@Path("session") session: String): ApiResult<Unit>
 
     @GET("user")
-    fun getUser(@Body accessToken: String): ApiResult<UserResponse>
+    suspend fun getUser(@Query("accessToken") accessToken: String): ApiResult<UserResponse>
 
     @GET("register/nextOnboardingStep")
-    fun getNextOnboardingStep(@Header("session") session: String): ApiResult<String>
+    suspend fun getNextOnboardingStep(@Header("session") session: String): ApiResult<String>
 
     @GET("animals")
     suspend fun getAnimals(

@@ -118,4 +118,4 @@ fun SessionResponse.toDomain() = Session(session)
 
 fun TokenResponse.toDomain() = Token(accessToken, refreshToken)
 
-fun UserResponse.toDomain() = User(firstName, lastName, city, phoneNumber, email)
+fun UserResponse.toDomain() = User(firstName, lastName, city, phoneNumber, email, profilePicture)
