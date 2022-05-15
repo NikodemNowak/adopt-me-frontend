@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_endRegistrationFragment_to_formFragment"
             app:destination="@id/formFragment" />
+        <action
+            android:id="@+id/endRegistrationFragment_to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerShelterFragment"
@@ -85,6 +88,9 @@
         <action
             android:id="@+id/action_endLoggingInFragment_to_formFragment"
             app:destination="@id/formFragment" />
+        <action
+            android:id="@+id/endLoggingInFragment_to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeScreenFragment"

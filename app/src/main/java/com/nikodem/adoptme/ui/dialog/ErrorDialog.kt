@@ -25,6 +25,7 @@ class ErrorDialog : DialogFragment() {
                         dialog.cancel()
                     }
                     .setNegativeButton("Cancel") { dialog, id ->
+                        errorEvent.onDialogCancelled.invoke()
                         dialog.cancel()
                     }
                 // Create the AlertDialog object and return it

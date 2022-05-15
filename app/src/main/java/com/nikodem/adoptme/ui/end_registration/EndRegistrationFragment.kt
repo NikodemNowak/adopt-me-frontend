@@ -27,6 +27,12 @@ class EndRegistrationFragment :
             )
         }
 
+        viewModel.navigateToHomeScreenFragmentEvent.observe(viewLifecycleOwner) {
+            findNavController().navigate(
+                EndRegistrationFragmentDirections.endRegistrationFragmentToHomeScreenFragment()
+            )
+        }
+
         binding.pinEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.onPinChange(text.toString())
         }

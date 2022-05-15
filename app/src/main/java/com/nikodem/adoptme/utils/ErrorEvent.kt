@@ -6,5 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ErrorEvent(
     val throwable: Throwable,
-    val retryAction: () -> Unit
+    val retryAction: () -> Unit,
+    val onDialogCancelled: () ->  Unit
 ) : Parcelable

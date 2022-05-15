@@ -35,21 +35,6 @@ class ConfirmOtpCodeFragment :
         super.onCreate(savedInstanceState)
         viewModel.onArgsReceived(args.authProcess)
 
-        Timber.d("Creating SMSBroadcastReceiver")
-        smsBroadcastReceiver = SMSBroadcastReceiver { message ->
-            Timber.d("Otp message received")
-            viewModel.onSmsReceived(message.extractOtp())
-        }
-
-        lifecycleScope.launch {
-            Timber.d("Initializing smsHandler")
-            smsHandler.initialize()
-            requireContext().registerReceiver(
-                smsBroadcastReceiver,
-                IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-            )
-        }
-
 //        viewModel.restoreState()
     }
 
@@ -98,6 +83,27 @@ class ConfirmOtpCodeFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        Timber.d("Creating SMSBroadcastReceiver")
+        if (smsBroadcastReceiver == null) {
+            smsBroadcastReceiver = SMSBroadcastReceiver { message ->
+                Timber.d("Otp message received")
+                viewModel.onSmsReceived(message.extractOtp())
+            }
+
+            lifecycleScope.launch {
+                Timber.d("Initializing smsHandler")
+                smsHandler.initialize()
+                requireContext().registerReceiver(
+                    smsBroadcastReceiver,
+                    IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
+                )
+            }
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 //        viewModel.saveState()
@@ -107,6 +113,7 @@ class ConfirmOtpCodeFragment :
         timer?.cancel()
         lifecycleScope.launch {
             smsBroadcastReceiver?.let { requireContext().unregisterReceiver(it) }
+            smsBroadcastReceiver = null
         }
         super.onDestroyView()
     }

@@ -9,7 +9,6 @@ import com.nikodem.adoptme.utils.AdoptMeError
 import com.nikodem.adoptme.utils.BaseViewModel
 import com.nikodem.adoptme.utils.ViewState
 import com.nikodem.adoptme.utils.fireEvent
-import kotlinx.coroutines.CoroutineScope
 
 class RegisterUserFragmentViewModel(
     private val addUserUseCase: AddUserUseCase,
@@ -138,9 +137,9 @@ class RegisterUserFragmentViewModel(
         }
     }
 
-    override fun handleError(exception: Throwable, retryAction: () -> Unit) {
+    override fun handleError(throwable: Throwable, retryAction: () -> Unit) {
         updateViewState { it.copy(isLoading = false) }
-        when (exception) {
+        when (throwable) {
             is AdoptMeError.EmailTakenError -> {
                 showToastEvent.fireEvent("Email is already taken")
             }
@@ -148,7 +147,7 @@ class RegisterUserFragmentViewModel(
                 showToastEvent.fireEvent("Phone number is already taken")
             }
             else -> {
-                super.handleError(exception, retryAction)
+                super.handleError(throwable, retryAction)
             }
         }
     }

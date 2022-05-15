@@ -56,7 +56,12 @@ class ConfirmOtpCodeFragmentViewModel(
     }
 
     fun sendOtpCode() {
-        safeLaunch {
+        safeLaunch(
+            onFailure = { exception ->
+                updateViewState { it.copy(isLoading = false) }
+                handleError(exception, retryAction = { sendOtpCode() })
+            }
+        ) {
             updateViewState { it.copy(isLoading = true) }
 
             if (viewState.value!!.authProcess == AuthProcess.REGISTER) {
@@ -73,6 +78,10 @@ class ConfirmOtpCodeFragmentViewModel(
                 navigateToEndLoggingIn.fireEvent()
             }
         }
+    }
+
+    override fun onErrorDialogCancelled() {
+        updateViewState { it.copy(isLoading = false) }
     }
 }
 

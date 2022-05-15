@@ -14,6 +14,7 @@ class EndRegistrationFragmentViewModel(
     BaseViewModel<EndRegistrationFragmentViewState>(initialState = EndRegistrationFragmentViewState()) {
 
     val navigateToFormFragmentEvent: LiveEvent<Unit> = LiveEvent()
+    val navigateToHomeScreenFragmentEvent: LiveEvent<Unit> = LiveEvent()
 
     private fun isPin4Digit() {
         with(currentState) {
@@ -94,7 +95,7 @@ class EndRegistrationFragmentViewModel(
 
                 updateViewState { it.copy(isLoading = false) }
 
-                navigateToFormFragmentEvent.fireEvent()
+                navigateToHomeScreenFragmentEvent.fireEvent()
             }
         } else {
             showSnackbarEvent.fireEvent("Pin invalid")

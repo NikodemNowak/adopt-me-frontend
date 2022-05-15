@@ -12,6 +12,7 @@ class EndLoggingInFragmentViewModel(
     BaseViewModel<EndLoggingInFragmentViewState>(initialState = EndLoggingInFragmentViewState()) {
 
     val navigateToFormFragmentEvent: LiveEvent<Unit> = LiveEvent()
+    val navigateToHomeScreenFragmentEvent: LiveEvent<Unit> = LiveEvent()
 
     private fun isPin4Digit() {
         with(currentState) {
@@ -63,10 +64,15 @@ class EndLoggingInFragmentViewModel(
         }
     }
 
-    fun onRegisterButtonClick() {
+    fun onLoginButtonClick() {
         validate()
         if (currentState.isPinValid) {
-            safeLaunch {
+            safeLaunch(
+                onFailure = { throwable ->
+                    updateViewState { it.copy(isLoading = false) }
+                    handleError(throwable, retryAction = ::onLoginButtonClick)
+                }
+            ) {
                 updateViewState { it.copy(isLoading = true) }
 
                 with(currentState) {
@@ -75,7 +81,7 @@ class EndLoggingInFragmentViewModel(
 
                 updateViewState { it.copy(isLoading = false) }
 
-                navigateToFormFragmentEvent.fireEvent()
+                navigateToHomeScreenFragmentEvent.fireEvent()
             }
         } else {
             showSnackbarEvent.fireEvent("Pin invalid")

@@ -19,13 +19,17 @@ class EndLoggingInFragment :
             findNavController().navigate(EndLoggingInFragmentDirections.actionEndLoggingInFragmentToFormFragment())
         }
 
+        viewModel.navigateToHomeScreenFragmentEvent.observe(viewLifecycleOwner) {
+            findNavController().navigate(EndLoggingInFragmentDirections.endLoggingInFragmentToHomeScreenFragment())
+        }
+
         binding.editText2.doOnTextChanged { text, _, _, _ ->
             viewModel.onPinChange(text.toString())
         }
 
 
         binding.loggingButton.setOnClickListener {
-            viewModel.onRegisterButtonClick()
+            viewModel.onLoginButtonClick()
         }
     }
 }

@@ -30,8 +30,14 @@ abstract class BaseViewModel<STATE : ViewState>(
         }
     }
 
-    open fun handleError(exception: Throwable, retryAction: () -> Unit) {
-        showErrorDialogEvent.fireEvent(ErrorEvent(exception, retryAction))
+    open fun handleError(throwable: Throwable, retryAction: () -> Unit) {
+        showErrorDialogEvent.fireEvent(
+            ErrorEvent(
+                throwable = throwable,
+                retryAction = retryAction,
+                onDialogCancelled = ::onErrorDialogCancelled
+            )
+        )
     }
 
     protected fun safeLaunch(
@@ -50,6 +56,10 @@ abstract class BaseViewModel<STATE : ViewState>(
             },
             block = block
         )
+    }
+
+    open fun onErrorDialogCancelled() {
+        // Implement
     }
 }
 
