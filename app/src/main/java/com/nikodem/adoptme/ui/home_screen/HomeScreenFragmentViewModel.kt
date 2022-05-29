@@ -10,6 +10,7 @@ import com.nikodem.adoptme.BuildConfig
 import com.nikodem.adoptme.db.dao.AnimalDao
 import com.nikodem.adoptme.usecases.Animal
 import com.nikodem.adoptme.usecases.GetAnimalsUseCase
+import com.nikodem.adoptme.usecases.GetUserUseCase
 import com.nikodem.adoptme.utils.BaseViewModel
 import com.nikodem.adoptme.utils.ViewState
 import com.nikodem.adoptme.utils.navigation.NavigationManager
@@ -19,11 +20,16 @@ import kotlinx.coroutines.flow.collect
 class HomeScreenFragmentViewModel(
     private val getAnimalsUseCase: GetAnimalsUseCase,
     private val animalMediator: AnimalMediator,
-    private val animalDao: AnimalDao
+    private val animalDao: AnimalDao,
+    private val getUserUseCase: GetUserUseCase
 ) :
     BaseViewModel<HomeScreenFragmentViewState>(
         initialState = HomeScreenFragmentViewState()
     ), NavigationManager by NavigationManagerImpl() {
+
+    init {
+        getUserData()
+    }
 
     @OptIn(ExperimentalPagingApi::class)
     val animals = Pager(
@@ -47,9 +53,21 @@ class HomeScreenFragmentViewModel(
     fun navigateToProfile() {
         navigateTo(HomeScreenFragmentDirections.actionHomeScreenFragmentToProfileScreenFragment())
     }
+
+    fun getUserData() {
+        safeLaunch {
+            val user = getUserUseCase.invoke()
+            updateViewState {
+                it.copy(
+                    profilePicture = user.profilePicture!!
+                )
+            }
+        }
+    }
 }
 
 data class HomeScreenFragmentViewState(
     override val isLoading: Boolean = false,
-    val animals: List<Animal> = emptyList()
+    val animals: List<Animal> = emptyList(),
+    val profilePicture: String = ""
 ) : ViewState

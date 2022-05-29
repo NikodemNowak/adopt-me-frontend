@@ -40,7 +40,8 @@ val appModule = module {
                 database = get(),
                 adoptMeRepository = get()
             ),
-            animalDao = get<AppDatabase>().animalDao()
+            animalDao = get<AppDatabase>().animalDao(),
+            getUserUseCase = get()
         )
     }
 

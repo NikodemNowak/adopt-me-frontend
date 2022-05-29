@@ -24,10 +24,13 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.nikodem.adoptme.R
 import com.nikodem.adoptme.db.entity.AnimalDB
 import com.nikodem.adoptme.ui.theme.*
 import com.nikodem.adoptme.utils.nullableString
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(
@@ -35,89 +38,73 @@ fun HomeScreen(
 ) {
     val data by viewModel.viewState.observeAsState(viewModel.currentState)
     val animals = viewModel.animals.collectAsLazyPagingItems()
+    var isRefreshing by remember { mutableStateOf(false) }
 
     val lazyListState = rememberLazyListState()
+    val loadState = animals.loadState
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { animals.loadState }.collectLatest { loadState ->
+            if (loadState.refresh !is LoadState.Loading && loadState.source.refresh !is LoadState.Loading) {
+                isRefreshing = false
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
-            MyTopBar(viewModel::navigateToProfile)
+            MyTopBar(viewModel::navigateToProfile, data.profilePicture)
         }
-    ) {
-        val loadState = animals.loadState
-
-        if (loadState.refresh is LoadState.Loading || loadState.source.refresh is LoadState.Loading) {
-            Text(
-                modifier = Modifier.padding(vertical = 20.dp),
-                text = "Loading..."
-            )
-        } else if (animals.loadState.mediator?.refresh is LoadState.Error) {
-            Text(text = "Cos poszlo nie tak")
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                state = lazyListState
-            ) {
-                items(animals) { animal ->
-                    animal?.let {
-                        AnimalListItem(
-                            animal,
-                            viewModel::onItemClicked
-                        )
-                    }
+    ) { paddingValues ->
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+            onRefresh = {
+                animals.refresh()
+                isRefreshing = true
+            }
+        ) {
+            if (loadState.refresh is LoadState.Loading || loadState.source.refresh is LoadState.Loading) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        modifier = Modifier.padding(vertical = 20.dp),
+                        text = "Loading..."
+                    )
                 }
+            } else if (animals.loadState.mediator?.refresh is LoadState.Error) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(text = "Cos poszlo nie tak")
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    state = lazyListState
+                ) {
+                    items(animals) { animal ->
+                        animal?.let {
+                            AnimalListItem(
+                                animal,
+                                viewModel::onItemClicked
+                            )
+                        }
+                    }
 
-                if (loadState.append is LoadState.Error) {
-                    item {
-                        Text(text = "blad ladowania")
-                        Button(onClick = {}) {
-                            Text(text = "Retry")
+                    if (loadState.append is LoadState.Error) {
+                        item {
+                            Text(text = "blad ladowania")
+                            Button(onClick = {}) {
+                                Text(text = "Retry")
+                            }
                         }
                     }
                 }
-
-//            item {
-//                Text(text = "hej")
-//                Text(text = "hej2")
-//                Button(onClick = viewModel::onButtonClick) {
-//                    Text(text = "Loading: ${data.isLoading}")
-//                }
-//            }
-//
-//            item {
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(top = 20.dp)
-//                        .background(Color.Blue)
-//                        .padding(top = 10.dp),
-//                    horizontalArrangement = Arrangement.SpaceEvenly
-//                ){
-//                    Text(text = "hej")
-//                    Text(text = "hej2")
-//                    Text(text = "3")
-//                }
-//            }
-
             }
-
-//            AnimatedVisibility(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .background(Color.White),
-//                visible = animals.loadState.mediator?.append is LoadState.Loading,
-//                enter = fadeIn(
-//                    // Fade in with the initial alpha of 0.3f.
-//                    initialAlpha = 0.5f
-//                ),
-//                exit = slideOutVertically() + shrinkVertically() + fadeOut()
-//            ) {
-//                Text(
-//                    modifier = Modifier.padding(vertical = 20.dp),
-//                    text = "Loading..."
-//                )
-//            }
-
         }
     }
 }
@@ -177,7 +164,7 @@ fun AnimalListItem(
 }
 
 @Composable
-fun MyTopBar(navigateToProfile: () -> Unit) {
+fun MyTopBar(navigateToProfile: () -> Unit, profilePicture: String) {
     var animalType by remember { mutableStateOf(AnimalType.ALL) }
 
     Column(
@@ -205,7 +192,7 @@ fun MyTopBar(navigateToProfile: () -> Unit) {
                         onClick = navigateToProfile
                     ),
                 painter = rememberImagePainter(
-                    data = "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528",
+                    data = profilePicture,
                     builder = {
                         crossfade(true)
                         placeholder(R.drawable.ic_baseline_assignment_ind_24)

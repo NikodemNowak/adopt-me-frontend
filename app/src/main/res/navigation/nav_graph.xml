@@ -49,7 +49,10 @@
             app:destination="@id/formFragment" />
         <action
             android:id="@+id/endRegistrationFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/registerShelterFragment"
@@ -90,7 +93,10 @@
             app:destination="@id/formFragment" />
         <action
             android:id="@+id/endLoggingInFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/homeScreenFragment"
@@ -121,9 +127,15 @@
         android:label="SplashScreenFragment" >
         <action
             android:id="@+id/to_loginOrRegisterFragment"
-            app:destination="@id/loginOrRegisterFragment" />
+            app:destination="@id/loginOrRegisterFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
 </navigation>
